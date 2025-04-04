@@ -1,109 +1,171 @@
+// Menu Responsivo
+$(document).ready(function() {
+    const mobileMenuBtn = $('.mobile-menu-btn');
+    const navLinks = $('.nav-links');
+    
+    // Inicialização do menu
+    function initMenu() {
+        if ($(window).width() <= 768) {
+            navLinks.hide();
+            mobileMenuBtn.show();
+        } else {
+            navLinks.show();
+            mobileMenuBtn.hide();
+        }
+    }
+    
+    initMenu();
+    
+    // Toggle do menu (mobile)
+    mobileMenuBtn.click(function(e) {
+        e.preventDefault();
+        if ($(window).width() <= 768) {
+            navLinks.slideToggle(200);
+            mobileMenuBtn.toggleClass('active');
+        }
+    });
+
+    // Fechar menu ao clicar em links (mobile)
+    $('.nav-links a').click(function() {
+        if ($(window).width() <= 768) {
+            navLinks.slideUp(200);
+            mobileMenuBtn.removeClass('active');
+        }
+    });
+
+    // Fechar menu ao clicar fora (mobile)
+    $(document).click(function(e) {
+        if ($(window).width() <= 768) {
+            if (!navLinks.is(e.target) && !mobileMenuBtn.is(e.target) && 
+                navLinks.has(e.target).length === 0 && mobileMenuBtn.has(e.target).length === 0) {
+                navLinks.slideUp(200);
+                mobileMenuBtn.removeClass('active');
+            }
+        }
+    });
+
+    // Atualizar ao redimensionar
+    $(window).resize(function() {
+        initMenu();
+    });
+});
 
 // FAQ Accordion
-const faqQuestions = document.querySelectorAll('.faq-question');
-
-faqQuestions.forEach(question => {
-    question.addEventListener('click', () => {
-        const answer = question.nextElementSibling;
-        const isActive = question.classList.contains('active');
+$(document).ready(function() {
+    $('.faq-question').click(function() {
+        const answer = $(this).next();
+        const icon = $(this).find('i');
         
-        // Close all first
-        document.querySelectorAll('.faq-question').forEach(q => {
-            q.classList.remove('active');
-            q.nextElementSibling.classList.remove('show');
-        });
-        
-        // Open current if wasn't active
-        if (!isActive) {
-            question.classList.add('active');
-            answer.classList.add('show');
-        }
+        answer.slideToggle(200);
+        icon.toggleClass('fa-chevron-up fa-chevron-down');
     });
 });
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+// Configuração dos Swipers
+const screenshotsSwiper = new Swiper('.screenshots-swiper', {
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    spaceBetween: 30,
+    grabCursor: false,
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true
+    },
+    breakpoints: {
+        320: {
+            slidesPerView: 1,
+            spaceBetween: 20
+        },
+        768: {
+            slidesPerView: 'auto',
+            spaceBetween: 30
+        }
+    }
+});
+
+const pricingSwiper = new Swiper('.pricing-swiper', {
+    slidesPerView: 'auto',
+    centeredSlides: true,
+    initialSlide: 2,
+    spaceBetween: 0,
+    grabCursor: true,
+    speed: 400,
+    effect: 'slide',
+    breakpoints: {
+        768: {
+            slidesPerView: 2.5,
+            spaceBetween: 15,
+        },
+        1024: {
+            slidesPerView: 3.5,
+            spaceBetween: 30,
+        }
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+    }
+});
+
+// Adicionar classe popular ao plano Essencial
+$(document).ready(function() {
+    $('.pricing-card:nth-child(3)').addClass('popular');
+    $('.pricing-card.popular').prepend('<div class="popular-tag">MAIS POPULAR</div>');
+});
+
+// Modal dos Prints
+$(document).ready(function() {
+    const printsModal = $('#printsModal');
+    const printsModalImg = $('#printsModalImage');
+    const printsModalClose = $('.prints-modal-close');
+
+    $('.screenshot-img').click(function(e) {
         e.preventDefault();
-        
-        const targetId = this.getAttribute('href');
-        if (targetId === '#') return;
-        
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-            window.scrollTo({
-                top: targetElement.offsetTop - 80,
-                behavior: 'smooth'
-            });
+        printsModal.fadeIn(200);
+        printsModalImg.attr('src', $(this).attr('src'));
+    });
+
+    printsModalClose.click(function() {
+        printsModal.fadeOut(200);
+    });
+
+    printsModal.click(function(e) {
+        if (e.target === this) {
+            printsModal.fadeOut(200);
+        }
+    });
+
+    $(document).keydown(function(e) {
+        if (e.key === 'Escape' && printsModal.is(':visible')) {
+            printsModal.fadeOut(200);
         }
     });
 });
 
-// Add shadow to header on scroll
-window.addEventListener('scroll', () => {
-    const header = document.querySelector('header');
-    if (window.scrollY > 10) {
-        header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
-    } else {
-        header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-    }
-});
-
-// Menu Mobile Toggle
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const navLinks = document.querySelector('.nav-links');
-
-if (mobileMenuBtn) {
-    mobileMenuBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        navLinks.classList.toggle('active');
-        // Alterna o ícone do botão
-        const icon = this.querySelector('i');
-        if (navLinks.classList.contains('active')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
+// Botão Voltar ao Topo - Versão Corrigida
+$(document).ready(function() {
+    const backToTop = $('.back-to-top');
+    
+    // Mostrar/ocultar ao rolar
+    function toggleBackToTop() {
+        if ($(window).scrollTop() > 300) {
+            backToTop.addClass('show');
         } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
+            backToTop.removeClass('show');
         }
-    });
-}
-
-// Fecha o menu ao clicar em qualquer lugar fora dele
-document.addEventListener('click', function(e) {
-    if (navLinks.classList.contains('active') && !e.target.closest('nav')) {
-        navLinks.classList.remove('active');
-        const icon = mobileMenuBtn.querySelector('i');
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
     }
-});
-
-// Fecha o menu ao clicar em um link
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', function() {
-        navLinks.classList.remove('active');
-        const icon = mobileMenuBtn.querySelector('i');
-        icon.classList.remove('fa-times');
-        icon.classList.add('fa-bars');
+    
+    // Inicializar
+    toggleBackToTop();
+    
+    // Atualizar ao rolar
+    $(window).scroll(function() {
+        toggleBackToTop();
     });
-});
-
-// Botão Voltar ao Topo
-const backToTop = document.getElementById('backToTop');
-
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        backToTop.classList.add('visible');
-    } else {
-        backToTop.classList.remove('visible');
-    }
-});
-
-backToTop.addEventListener('click', (e) => {
-    e.preventDefault();
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    
+    // Clicar no botão
+    backToTop.click(function(e) {
+        e.preventDefault();
+        $('html, body').animate({scrollTop: 0}, 'smooth');
     });
 });
