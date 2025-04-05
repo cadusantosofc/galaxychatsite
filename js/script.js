@@ -50,38 +50,60 @@ $(document).ready(function() {
     });
 });
 
-// FAQ Accordion
-$(document).ready(function() {
-    $('.faq-question').click(function() {
-        const answer = $(this).next();
-        const icon = $(this).find('i');
+    // Substitua o código existente do FAQ por esta versão melhorada
+    $(document).ready(function() {
+        // FAQ Accordion - Versão Melhorada
+        $('.faq-question').click(function() {
+            const $this = $(this);
+            const $faqItem = $this.closest('.faq-item');
+            const $answer = $this.next('.faq-answer');
+            const $icon = $this.find('i');
+            
+            // Fecha todos os outros FAQs
+            $('.faq-item').not($faqItem).removeClass('active');
+            $('.faq-question').not($this).removeClass('active');
+            $('.faq-answer').not($answer).removeClass('show');
+            $('.faq-question i').not($icon).removeClass('fa-chevron-up').addClass('fa-chevron-down');
+            
+            // Toggle do FAQ atual
+            $faqItem.toggleClass('active');
+            $this.toggleClass('active');
+            $answer.toggleClass('show');
+            $icon.toggleClass('fa-chevron-up fa-chevron-down');
+            
+            // Anima o scroll para o FAQ aberto em mobile
+            if($this.hasClass('active') && $(window).width() < 100) {
+                $('html, body').animate({
+                    scrollTop: $faqItem.offset().top - 20
+                }, 300);
+            }
+        });
         
-        answer.slideToggle(200);
-        icon.toggleClass('fa-chevron-up fa-chevron-down');
+        // Abre o primeiro FAQ por padrão (opcional)
+        // $('.faq-item:first-child .faq-question').trigger('click');
     });
-});
 
-// Configuração dos Swipers
-const screenshotsSwiper = new Swiper('.screenshots-swiper', {
-    slidesPerView: 'auto',
-    centeredSlides: true,
-    spaceBetween: 30,
-    grabCursor: false,
-    pagination: {
-        el: '.swiper-pagination',
-        clickable: true
-    },
-    breakpoints: {
-        320: {
-            slidesPerView: 1,
-            spaceBetween: 20
+    // Configuração dos Swipers
+    const screenshotsSwiper = new Swiper('.screenshots-swiper', {
+        slidesPerView: 'auto',
+        centeredSlides: true,
+        spaceBetween: 30,
+        grabCursor: false,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
         },
-        768: {
-            slidesPerView: 'auto',
-            spaceBetween: 30
+        breakpoints: {
+            320: {
+                slidesPerView: 1,
+                spaceBetween: 20
+            },
+            768: {
+                slidesPerView: 'auto',
+                spaceBetween: 30
+            }
         }
-    }
-});
+    });
 
 const pricingSwiper = new Swiper('.pricing-swiper', {
     slidesPerView: 'auto',
