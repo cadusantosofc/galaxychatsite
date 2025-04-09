@@ -13,30 +13,7 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <a class="link" href="index.html">
-                        <i class="fas fa-comments"></i>
-                        <span>Galaxy Chat</span>
-                    </a>
-                </div>
-                <button class="mobile-menu-btn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links" id="menu-items">
-                    <li><a href="#features">Funcionalidades</a></li>
-                    <li><a href="#how-it-works">Como Funciona</a></li>
-                    <li><a href="#pricing">Planos</a></li>
-                    <li><a href="#faq">Dúvidas</a></li>
-                    <li><a href="https://galaxychat.gitbook.io/docs" target="_blank">Documentação</a></li>
-                    <li><a href="https://app.galaxychat.com.br/#/signup" class="nav-cta">Teste Grátis</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- O cabeçalho será carregado via JavaScript -->
 
     <!-- Hero Section -->
     <section class="hero">
@@ -311,9 +288,29 @@
     </section>
 
     <!-- Modal dos Prints -->
-    <div class="prints-modal" id="printsModal">
-        <span class="prints-modal-close">&times;</span>
-        <img class="prints-modal-img" id="printsModalImage" src="" alt="Print expandido">
+    <div class="print-modal" id="printsModal">
+        <div class="print-modal-content">
+            <div class="print-modal-header">
+                <h3 id="printsModalTitle">Galaxy Chat</h3>
+                <button class="print-modal-close">&times;</button>
+            </div>
+            <div class="print-modal-body">
+                <img class="print-modal-img" id="printsModalImage" src="" alt="Print expandido">
+            </div>
+            <div class="print-modal-footer">
+                <div class="print-modal-caption" id="printsModalCaption"></div>
+                <div class="print-modal-nav">
+                    <button class="print-modal-prev"><i class="fas fa-chevron-left"></i></button>
+                    <span id="printModalCounter">1/10</span>
+                    <button class="print-modal-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="print-modal-zoom">
+                    <button class="print-modal-zoom-in"><i class="fas fa-search-plus"></i></button>
+                    <button class="print-modal-zoom-out"><i class="fas fa-search-minus"></i></button>
+                    <button class="print-modal-zoom-reset"><i class="fas fa-compress-arrows-alt"></i></button>
+                </div>
+            </div>
+        </div>
     </div>
 
 <!-- Pricing -->
@@ -716,5 +713,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/nav.js"></script>
 </body>
 </html>

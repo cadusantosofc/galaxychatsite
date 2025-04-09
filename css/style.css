@@ -8,6 +8,10 @@
             --gray: #6C757D;
             --light-gray: #E9ECEF;
             --success: #28A745;
+            --success-light: rgba(40, 167, 69, 0.1);
+            --primary-light: rgba(74, 111, 227, 0.1);
+            --primary-lighter: rgba(74, 111, 227, 0.03);
+            --primary-rgb: 74, 111, 227;
         }
         
         * {
@@ -82,6 +86,23 @@
         
         .nav-links a:hover {
             color: var(--primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary);
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+            border-radius: 2px;
         }
         
         .nav-cta {
@@ -297,7 +318,7 @@
             border-radius: 10px;
             padding: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.03);
-            border: 1px solid rgba(42, 91, 220, 0.1);
+            border: 1px solid var(--primary-light);
             transition: transform 0.3s, box-shadow 0.3s;
         }
         
@@ -309,7 +330,7 @@
         .feature-icon {
             width: 60px;
             height: 60px;
-            background-color: rgba(42, 91, 220, 0.1);
+            background-color: var(--primary-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -401,25 +422,32 @@
         }
 
         .pricing-swiper {
+            overflow: visible !important;
             padding: 40px 0 60px;
-            overflow: visible;
             margin: 0 -8px;
         }
 
-        .pricing-swiper .swiper-slide {
-            width: 300px;
-            padding: 0 8px;
-            transition: all 0.3s ease;
-            opacity: 0.7;
-            transform: scale(0.85);
+        .pricing-swiper .swiper-wrapper {
+            align-items: center;
+            padding: 30px 0;
         }
 
-        .pricing-swiper .swiper-slide-active {
-            opacity: 1;
+        .pricing-swiper .swiper-slide {
+            padding: 0 8px;
+            transition: all 0.4s ease;
+            width: 300px;
+        }
+
+        .pricing-swiper .swiper-slide-active .pricing-card {
             transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(42, 65, 232, 0.2);
+            opacity: 1;
         }
 
         .pricing-card {
+            transform: scale(0.95);
+            opacity: 0.9;
+            transition: all 0.4s ease;
             background: white;
             border-radius: 15px;
             padding: 30px 20px;
@@ -428,25 +456,61 @@
             position: relative;
             max-width: 300px;
             margin: 0 auto;
-            transition: all 0.3s ease;
         }
 
+        .pricing-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .pricing-card .price {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .pricing-card .price span {
+            font-size: 16px;
+            font-weight: 400;
+            color: #666;
+        }
+
+        /* Card Popular */
         .pricing-card.popular {
             background: var(--primary-gradient);
             color: white;
         }
 
-        .pricing-card.popular .price,
         .pricing-card.popular h3,
+        .pricing-card.popular .price,
+        .pricing-card.popular .price span,
+        .pricing-card.popular .pricing-features li {
+            color: white;
+        }
+
         .pricing-card.popular .pricing-features i {
             color: white;
         }
 
         .pricing-card.popular .pricing-button {
             background: white;
-            color: var(--primary);
-            border: none;
-            font-weight: 700;
+            color: #2a41e8;
+        }
+
+        .popular-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
         }
 
         .swiper-slide-active .pricing-card {
@@ -471,11 +535,11 @@
 
         @media (max-width: 768px) {
             .pricing-swiper {
-                margin: 0;
+                padding: 20px 0 40px;
             }
-
+            
             .pricing-swiper .swiper-slide {
-                width: 85%;
+                padding: 0 5px;
             }
         }
         
@@ -685,7 +749,7 @@
         }
 
         .faq-question:hover {
-            background-color: rgba(74, 111, 227, 0.03);
+            background-color: var(--primary-lighter);
         }
 
         .faq-question h3 {
@@ -702,7 +766,7 @@
         }
 
         .faq-question.active {
-            background-color: rgba(74, 111, 227, 0.05);
+            background-color: var(--primary-light);
         }
 
         .faq-question.active i {
@@ -885,7 +949,7 @@
         /* Final CTA */
         .final-cta {
             padding: 80px 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: var(--primary-gradient);
             color: white;
             text-align: center;
         }
@@ -1018,7 +1082,7 @@
 
             .footer-bottom {
                 margin-top: 30px;
-                padding: 0 15px;
+                font-size: 12px;
             }
         }
 
@@ -1376,8 +1440,8 @@
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 45px;
-            height: 45px;
+            width: 50px;
+            height: 50px;
             background: var(--primary);
             color: white;
             border-radius: 50%;
@@ -1387,12 +1451,12 @@
             text-decoration: none;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            z-index: 1000;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .back-to-top.visible {
+        .back-to-top.show {
             opacity: 1;
             visibility: visible;
         }
@@ -1406,591 +1470,238 @@
             font-size: 20px;
         }
 
-        /* Melhorias no Footer */
-        footer {
-            background: var(--dark);
-            color: white;
-            padding: 60px 0 30px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-        }
-
-        .footer-column h3 {
-            color: white;
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .footer-links {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-
-        .footer-links a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 14px;
-        }
-
-        .footer-links a:hover {
-            color: white;
-            padding-left: 5px;
-        }
-
-        .footer-contact {
-            margin-top: 20px;
-        }
-
-        .footer-contact p {
-            display: block;
-            margin-bottom: 10px;
-            color: rgba(255,255,255,0.8);
-            font-size: 14px;
-            text-align: left;
-            justify-content: flex-start;
-        }
-
-        .footer-contact .email {
-            font-size: 13px;
-            word-break: break-all;
-            text-align: left;
-        }
-
-        .footer-bottom {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            text-align: center;
-            font-size: 13px;
-            color: rgba(255,255,255,0.6);
-        }
-
-        @media (max-width: 768px) {
-            .back-to-top {
-                bottom: 20px;
-                right: 20px;
-                width: 40px;
-                height: 40px;
-            }
-
-            footer {
-                padding: 40px 0 20px;
-            }
-
-            .footer-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-areas: 
-                    "produto suporte"
-                    "empresa contato";
-                gap: 30px;
-                text-align: center;
-            }
-
-            .footer-column.produto { grid-area: produto; }
-            .footer-column.suporte { grid-area: suporte; }
-            .footer-column.empresa { grid-area: empresa; }
-            .footer-column.contato { grid-area: contato; text-align: left !important; }
-
-            .footer-column {
-                text-align: left;
-            }
-
-            .footer-column h3 {
-                font-size: 16px;
-                margin-bottom: 15px;
-            }
-
-            .footer-links li {
-                margin-bottom: 10px;
-            }
-
-            .footer-contact p {
-                justify-content: flex-start !important;
-                text-align: left !important;
-            }
-
-            .footer-bottom {
-                margin-top: 30px;
-                font-size: 12px;
-            }
-        }
-
-        /* Job Openings */
-        .job-openings {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-            padding: 0 15px;
-        }
-
-        .job-card {
-            background: white;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid var(--light-gray);
-            transition: transform 0.3s;
-            text-align: center;
+        /* Modal dos Prints */
+        .print-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
             height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            padding: 0;
+            transition: all 0.3s ease;
+            overflow: hidden;
         }
 
-        .job-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .job-card.em-breve {
-            background: linear-gradient(135deg, rgba(74,111,227,0.03) 0%, rgba(107,143,249,0.03) 100%);
-        }
-
-        .em-breve-content {
+        .print-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 90vh;
+            margin: 3% auto;
+            background-color: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            animation: modalFadeIn 0.3s ease;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
         }
 
-        .em-breve-content i {
-            font-size: 48px;
-            color: var(--primary);
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        .em-breve-content h3 {
-            font-size: 24px;
-            color: var(--primary);
-            margin: 0;
-        }
-
-        .em-breve-content p {
-            color: var(--gray);
-            font-size: 16px;
-            margin: 0;
-            max-width: 400px;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-            .job-openings {
-                grid-template-columns: 1fr;
-                max-width: 400px;
-                margin: 40px auto 0;
-            }
-
-            .job-card {
-                padding: 30px 20px;
-            }
-
-            .em-breve-content i {
-                font-size: 36px;
-            }
-
-            .em-breve-content h3 {
-                font-size: 20px;
-            }
-
-            .em-breve-content p {
-                font-size: 14px;
-            }
-        }
-
-        /* Culture and Benefits Sections */
-        .culture-grid,
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .culture-item,
-        .benefit-item {
-            background: white;
-            border-radius: 10px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            border: 1px solid var(--light-gray);
-            transition: transform 0.3s;
-        }
-
-        .culture-item:hover,
-        .benefit-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .culture-item i,
-        .benefit-item i {
-            font-size: 36px;
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .culture-item h3,
-        .benefit-item h3 {
-            font-size: 20px;
-            color: var(--dark);
-            margin-bottom: 15px;
-        }
-
-        .culture-item p,
-        .benefit-item p {
-            color: var(--gray);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        @media (max-width: 768px) {
-            .culture-grid,
-            .benefits-grid {
-                grid-template-columns: 1fr;
-                max-width: 400px;
-                margin: 40px auto 0;
-                padding: 0 15px;
-            }
-
-            .culture-item,
-            .benefit-item {
-                padding: 25px;
-            }
-
-            .culture-item i,
-            .benefit-item i {
-                font-size: 30px;
-                margin-bottom: 15px;
-            }
-
-            .culture-item h3,
-            .benefit-item h3 {
-                font-size: 18px;
-            }
-        }
-
-        /* Terms Page */
-        .terms {
-            padding: 100px 0;
-            background: var(--light);
-        }
-
-        .terms-content {
-            background: white;
-            border-radius: 10px;
-            padding: 40px;
-            margin-top: 40px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .terms-section {
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .terms-section:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-
-        .terms-section h3 {
-            color: var(--dark);
-            font-size: 20px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .terms-section p {
-            color: var(--gray);
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .terms-section p:last-child {
-            margin-bottom: 0;
-        }
-
-        .terms-section strong {
-            color: var(--dark);
-            font-weight: 500;
-        }
-
-        .terms-section ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .terms-section ul li {
-            color: var(--gray);
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 10px;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .terms-section ul li:before {
-            content: "•";
-            color: var(--primary);
-            position: absolute;
-            left: 0;
-        }
-
-        .terms-section ul li:last-child {
-            margin-bottom: 0;
-        }
-
-        .terms-section a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .terms-section a:hover {
-            color: var(--primary-dark);
-        }
-
-        @media (max-width: 768px) {
-            .terms {
-                padding: 60px 0;
-            }
-
-            .terms-content {
-                padding: 30px 20px;
-                margin: 30px 15px 0;
-            }
-
-            .terms-section {
-                margin-bottom: 25px;
-                padding-bottom: 25px;
-            }
-
-            .terms-section h3 {
-                font-size: 18px;
-            }
-        }
-
-        /* About Section Styles */
-        .about-section {
-            padding: 120px 0 80px;
-            background-color: #f8f9fa;
-        }
-
-        .about-intro {
-            max-width: 800px;
-            margin: 0 auto 60px;
-            text-align: center;
-        }
-
-        .about-intro p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #666;
-        }
-
-        .about-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
-        }
-
-        .about-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            text-align: center;
-        }
-
-        .about-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .card-icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: var(--primary-gradient);
-            border-radius: 50%;
+        .print-modal-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
+            padding: 15px 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .card-icon i {
-            font-size: 32px;
+        .print-modal-header h3 {
             color: white;
-        }
-
-        .about-card h3 {
-            color: var(--primary);
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .about-card p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-
-        .card-list {
-            text-align: left;
-        }
-
-        .list-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .list-item i {
-            color: var(--primary);
-            font-size: 18px;
-            margin-top: 3px;
-        }
-
-        .list-item strong {
-            display: block;
-            color: #333;
-            margin-bottom: 5px;
-        }
-
-        .list-item p {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .print-modal-body {
+            position: relative;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.3);
+            max-height: calc(90vh - 120px);
+            cursor: default;
+        }
+
+        .print-modal-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            transform-origin: center;
+            user-select: none;
+            -webkit-user-drag: none;
+            touch-action: none;
+        }
+        
+        .print-modal-img.dragging {
+            transition: none;
+            cursor: grabbing !important;
+        }
+
+        .print-modal-footer {
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .print-modal-caption {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .print-modal-nav {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+        }
+
+        .print-modal-nav button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .print-modal-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        #printModalCounter {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 10px;
+            font-size: 14px;
+        }
+
+        .print-modal-zoom {
+            display: flex;
+            align-items: center;
+        }
+
+        .print-modal-zoom button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin: 0 2px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .print-modal-zoom button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(1.1);
+        }
+
+        .print-modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0 5px;
+            line-height: 0.8;
+        }
+
+        .print-modal-close:hover {
+            color: #2a41e8;
+            transform: scale(1.2);
         }
 
         @media (max-width: 768px) {
-            .about-section {
-                padding: 100px 0 60px;
+            .print-modal-content {
+                width: 95%;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+                height: 100%;
+                max-height: 100vh;
+            }
+            
+            .print-modal-header {
+                padding: 10px 15px;
             }
 
-            .about-intro p {
-                font-size: 1.1rem;
-                padding: 0 20px;
+            .print-modal-body {
+                max-height: calc(100vh - 110px);
             }
-
-            .about-cards {
-                grid-template-columns: 1fr;
-                padding: 0 20px;
+            
+            .print-modal-footer {
+                padding: 10px 15px;
+                flex-wrap: wrap;
             }
-
-            .about-card {
-                padding: 25px;
+            
+            .print-modal-caption {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+                text-align: center;
             }
-        }
-
-        /* Estilização dos controles do Swiper */
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: var(--primary);
-        }
-
-        .swiper-pagination-bullet-active {
-            background-color: var(--primary);
-        }
-
-        /* Mensagem de arrastar */
-        .swipe-hint {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: var(--primary);
-            font-size: 16px;
-            font-weight: 500;
-            margin-top: 15px;
-            animation: bounce 2s infinite;
-        }
-
-        .swipe-hint i {
-            font-size: 18px;
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateX(0);
+            
+            .print-modal-nav {
+                margin: 0;
+                order: 1;
             }
-            50% {
-                transform: translateX(10px);
+            
+            .print-modal-zoom {
+                order: 2;
             }
         }
 
-        /* Pricing Cards */
-        .pricing-swiper {
-            padding: 40px 0 60px;
-            overflow: visible;
-            margin: 0 -8px;
+        .screenshot-img {
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .pricing-swiper .swiper-wrapper {
-            align-items: center;
-            padding: 30px 0;
+        .screenshot-img:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(var(--primary-rgb), 0.15);
         }
 
-        .pricing-swiper .swiper-slide {
-            width: 300px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
+        /* Efeito de zoom */
+        .zoom-in {
+            transform: scale(1.5);
+            cursor: zoom-out;
         }
 
-        .pricing-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px 20px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            position: relative;
-            max-width: 300px;
-            margin: 0 auto;
-            transition: inherit;
-            transform: scale(0.85);
-            opacity: 0.7;
-        }
-
-        .pricing-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
-        .pricing-card .price {
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 20px 0;
-        }
-
-        .pricing-card .price span {
-            font-size: 16px;
-            font-weight: 400;
-            color: var(--gray);
+        .zoom-out {
+            transform: scale(0.8);
+            cursor: zoom-in;
         }
 
         .pricing-features {
             list-style: none;
             padding: 0;
-            margin: 0 0 30px;
+            margin: 0 0 25px;
             text-align: left;
         }
 
@@ -1999,13 +1710,14 @@
             font-size: 14px;
             display: flex;
             align-items: center;
-            color: var(--dark);
+            color: #555;
         }
 
         .pricing-features i {
-            color: var(--success);
+            color: #28a745;
             margin-right: 10px;
             font-size: 12px;
+            min-width: 16px;
         }
 
         .pricing-button {
@@ -2015,337 +1727,365 @@
             text-decoration: none;
             font-weight: 600;
             transition: all 0.3s;
-            background: var(--primary);
+            background: #2a41e8;
             color: white;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
         }
 
         .pricing-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(42, 65, 232, 0.3);
         }
 
-        /* Card Popular */
-        .pricing-card.popular {
-            background: var(--primary-gradient);
-            color: white;
+        .pricing-button.secondary {
+            background: transparent;
+            color: #2a41e8;
+            border: 1px solid #2a41e8;
         }
 
-        .pricing-card.popular h3,
-        .pricing-card.popular .price,
-        .pricing-card.popular .price span,
-        .pricing-card.popular .pricing-features li {
-            color: white;
+        .pricing-button.secondary:hover {
+            background: rgba(42, 65, 232, 0.05);
         }
 
-        .pricing-card.popular .pricing-features i {
-            color: white;
-        }
-
-        .pricing-card.popular .pricing-button {
-            background: white;
-            color: var(--primary);
-            font-weight: 700;
-        }
-
-        .popular-tag {
+        .print-modal-drag-hint {
             position: absolute;
-            top: -12px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--success);
+            background-color: rgba(0, 0, 0, 0.7);
             color: white;
-            padding: 5px 15px;
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            z-index: 2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: none;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            white-space: nowrap;
         }
-
-        /* Card Ativo */
-        .swiper-slide-active .pricing-card {
-            transform: scale(1.05);
-            opacity: 1;
-            box-shadow: 0 8px 30px rgba(var(--primary-rgb), 0.2);
-        }
-
-        /* Responsivo */
-        @media (min-width: 1024px) {
-            .pricing-swiper .swiper-slide {
-                padding: 0 15px;
-            }
-        }
-
+        
         @media (max-width: 768px) {
-            .pricing-swiper {
-                padding: 20px 0 40px;
-            }
-
-            .pricing-swiper .swiper-slide {
-                padding: 0 10px;
-            }
-
-            .pricing-card {
-                padding: 25px 15px;
-            }
-
-            .pricing-card h3 {
-                font-size: 20px;
-            }
-
-            .pricing-card .price {
-                font-size: 32px;
-            }
-
-            .pricing-features li {
-                font-size: 13px;
+            .print-modal-drag-hint {
+                font-size: 12px;
+                padding: 6px 12px;
+                bottom: 60px; /* Posicionamento mais alto em mobile para não interferir com os controles */
             }
         }
 
-        /* Ajustes Mobile */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 20px;
-                text-align: center;
-            }
-
-            .pricing-card,
-            .screenshots-swiper .swiper-slide {
-                margin: 0 auto;
-            }
-
-            .pricing-features {
-                display: inline-block;
-                text-align: left;
-            }
-
-            .screenshots-swiper .swiper-slide {
-                width: 85%;
-            }
-
+        /* Classe para evitar scroll do corpo quando o modal estiver aberto */
+        body.modal-open {
+            overflow: hidden;
+            height: 100vh;
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            /* A propriedade 'top' será definida via JavaScript para manter a posição exata do scroll */
         }
 
-        /* Ajustes Desktop */
-        @media (min-width: 1024px) {
-            .screenshots-swiper .swiper-slide {
-                transform: scale(0.8);
-                transition: transform 0.3s;
-            }
-
-            .screenshots-swiper .swiper-slide-active {
-                transform: scale(1);
-            }
-        }
-
-        /* Controles do Swiper */
-        .swiper-button-next,
-        .swiper-button-prev {
-            color: var(--primary);
-            background: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .swiper-button-next:after,
-        .swiper-button-prev:after {
-            font-size: 18px;
+        /* Pricing Swiper Adjustments */
+        .swiper-pagination-bullet-active {
+            background: var(--primary) !important;
         }
 
         .swiper-pagination-bullet {
-            width: 10px;
-            height: 10px;
-            background: var(--primary);
-            opacity: 0.3;
+            opacity: 0.5;
+            background: var(--primary-light) !important;
         }
-
-        .swiper-pagination-bullet-active {
-            opacity: 1;
-            background: var(--primary);
+        
+        /* Estilos para páginas secundárias */
+        .about-section,
+        .privacy-section,
+        .terms-section,
+        .careers-section {
+            padding: 140px 0 80px;
+            background-color: #f9fafc;
         }
-
-        /* Modal de Imagem */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            justify-content: center;
+        
+        .about-intro,
+        .privacy-intro,
+        .terms-intro,
+        .careers-intro {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            text-align: center;
+            color: var(--gray);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        
+        /* Estilo para os cards das páginas secundárias */
+        .about-cards,
+        .privacy-cards,
+        .careers-positions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .about-card,
+        .privacy-card,
+        .terms-card,
+        .careers-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(var(--primary-rgb), 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--primary-light);
+        }
+        
+        .about-card:hover,
+        .privacy-card:hover,
+        .terms-card:hover,
+        .careers-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.15);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
             align-items: center;
-            backdrop-filter: blur(5px);
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: var(--primary);
         }
-
-        .modal-content {
-            position: relative;
-            max-width: 90vw;
-            max-height: 90vh;
-            margin: auto;
+        
+        .about-card h3,
+        .privacy-card h3,
+        .terms-card h3,
+        .careers-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--dark);
         }
-
-        .modal-content img {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 10px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        
+        .about-card p,
+        .privacy-card p,
+        .terms-card p,
+        .careers-card p {
+            color: var(--gray);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 20px;
         }
-
-        .close-modal {
-            position: absolute;
-            top: -40px;
-            right: 0;
+        
+        /* Estilo para listas nas páginas secundárias */
+        .card-list {
+            margin-top: 20px;
+        }
+        
+        .list-item {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .list-item i {
+            color: var(--primary);
+            margin-right: 15px;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .list-item strong {
+            display: block;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+        
+        .list-item p {
+            margin: 0;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Estilos para a página de termos e privacidade */
+        .terms-content,
+        .privacy-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(var(--primary-rgb), 0.08);
+            margin-top: 40px;
+            border: 1px solid var(--primary-light);
+        }
+        
+        .terms-content h3,
+        .privacy-content h3 {
+            color: var(--primary);
+            margin: 30px 0 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .terms-content p,
+        .privacy-content p {
+            color: var(--gray);
+            margin-bottom: 15px;
+            line-height: 1.7;
+        }
+        
+        .terms-content ul,
+        .privacy-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .terms-content li,
+        .privacy-content li {
+            color: var(--gray);
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+        
+        /* Estilos para trabalhe conosco */
+        .careers-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .careers-header h2 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .careers-header p {
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--gray);
+        }
+        
+        .job-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(var(--primary-rgb), 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid var(--primary-light);
+            margin-bottom: 30px;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(var(--primary-rgb), 0.15);
+        }
+        
+        .job-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .job-title h3 {
+            font-size: 22px;
+            color: var(--dark);
+            margin: 0;
+        }
+        
+        .job-type {
+            background-color: var(--primary-light);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .job-info {
+            display: flex;
+            margin-bottom: 20px;
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        .job-info div {
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .job-info i {
+            margin-right: 8px;
+            color: var(--primary);
+        }
+        
+        .job-description {
+            color: var(--gray);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+        
+        .job-card .apply-button {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 100px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            background: var(--primary);
             color: white;
-            font-size: 35px;
+            border: none;
+            font-size: 14px;
             cursor: pointer;
-            transition: transform 0.3s;
-            z-index: 10000;
         }
-
-        .close-modal:hover {
-            transform: scale(1.1);
+        
+        .job-card .apply-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(var(--primary-rgb), 0.3);
         }
-
-        /* Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-img {
-            max-width: 90%;
-            max-height: 90vh;
-            margin: auto;
-            display: block;
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-close {
-            position: absolute;
-            right: 35px;
-            top: 25px;
-            font-size: 40px;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-            z-index: 10000;
-        }
-
-        .modal-close:hover {
-            color: #ccc;
-            transform: scale(1.1);
-            transition: 0.3s;
-        }
-
-        /* Modal dos Prints */
-        .prints-modal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-            padding: 20px;
-        }
-
-        .prints-modal-img {
-            max-width: 90%;
-            max-height: 85vh;
-            margin: auto;
-            display: block;
-            border-radius: 8px;
-            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
-            object-fit: contain;
-        }
-
-        .prints-modal-close {
-            position: fixed;
-            right: 35px;
-            top: 25px;
-            font-size: 40px;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-            z-index: 10000;
-            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .prints-modal-close:hover {
-            color: #ccc;
-            transform: scale(1.1);
-        }
-
+        
         @media (max-width: 768px) {
-            .prints-modal {
-                padding: 10px;
+            .about-section,
+            .privacy-section,
+            .terms-section,
+            .careers-section {
+                padding: 120px 0 60px;
             }
-
-            .prints-modal-close {
-                right: 20px;
-                top: 15px;
-                font-size: 35px;
+            
+            .about-cards,
+            .privacy-cards,
+            .careers-positions {
+                grid-template-columns: 1fr;
+            }
+            
+            .about-card,
+            .privacy-card,
+            .terms-card,
+            .careers-card,
+            .job-card {
+                padding: 20px;
+            }
+            
+            .terms-content,
+            .privacy-content {
+                padding: 25px;
+            }
+            
+            .job-title {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .job-title h3 {
+                margin-bottom: 10px;
+            }
+            
+            .job-info {
+                flex-wrap: wrap;
+            }
+            
+            .job-info div {
+                margin-bottom: 10px;
+                width: 100%;
             }
         }
-
-        .screenshot-img {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .screenshot-img:hover {
-            transform: scale(1.05);
-        }
-/* Botão Voltar ao Topo */
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    background: #2a41e8;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s ease;
-    z-index: 999;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.back-to-top:hover {
-    background: #344bdf;
-    transform: translateY(-3px);
-}
-
-.back-to-top i {
-    font-size: 20px;
-}

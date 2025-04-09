@@ -12,38 +12,22 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
+    <!-- O cabeçalho será carregado via JavaScript -->
+
+    <!-- Hero Section para Sobre Nós -->
+    <section class="hero" style="padding-bottom: 60px;">
         <div class="container">
-            <nav>
-                <div class="logo">
-                    <a class="link" href="index.html">
-                        <i class="fas fa-comments"></i>
-                        <span>Galaxy Chat</span>
-                    </a>
-                </div>
-                <button class="mobile-menu-btn">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <ul class="nav-links">
-                    <li><a href="index.html#features">Funcionalidades</a></li>
-                    <li><a href="index.html#how-it-works">Como Funciona</a></li>
-                    <li><a href="index.html#pricing">Planos</a></li>
-                    <li><a href="index.html#faq">Dúvidas</a></li>
-                    <li><a href="https://galaxychat.gitbook.io/docs" target="_blank">Documentação</a></li>
-                    <li><a href="https://app.galaxychat.com.br/#/signup" class="nav-cta">Teste Grátis</a></li>
-                </ul>
-            </nav>
+            <h1>Conheça a <span>Galaxy Chat</span></h1>
+            <p>Uma plataforma inovadora de multi-atendimento que está transformando a comunicação digital.</p>
         </div>
-    </header>
+    </section>
 
     <!-- About Content -->
     <section class="about-section">
         <div class="container">
             <div class="section-title">
-                <br>
-                <h2>Sobre a <span>Galaxy Chat</span></h2>
-                <p>Transformando a comunicação empresarial</p>
+                <h2>Nossa <span>História</span></h2>
+                <p>Transformando a comunicação empresarial através da inovação</p>
             </div>
 
             <div class="about-intro">
@@ -55,7 +39,7 @@
                     <div class="card-icon">
                         <i class="fas fa-history"></i>
                     </div>
-                    <h3>Nossa História</h3>
+                    <h3>Nossa Jornada</h3>
                     <p>A Galaxy Chat nasceu da necessidade de oferecer um atendimento mais ágil, eficiente e integrado para empresas que buscam melhorar sua comunicação com clientes em múltiplas plataformas. Fundada com a visão de transformar a experiência de suporte e vendas, desenvolvemos uma solução completa que unifica canais como WhatsApp, Instagram, Facebook e outras redes sociais.</p>
                 </div>
 
@@ -122,6 +106,69 @@
             </div>
         </div>
     </section>
+    
+    <!-- Equipe -->
+    <section class="team-section" style="padding: 80px 0; background-color: #f9fafc;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossa <span>Equipe</span></h2>
+                <p>Conheça os profissionais apaixonados por comunicação que fazem a Galaxy Chat acontecer</p>
+            </div>
+            
+            <div class="about-cards" style="margin-top: 50px;">
+                <div class="about-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 3px solid var(--primary-light);">
+                        <img src="img/team1.jpg" alt="Membro da Equipe" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3>Ana Silva</h3>
+                    <p style="color: var(--primary); font-weight: 500; margin-bottom: 15px;">CEO & Fundadora</p>
+                    <p>Especialista em experiência do cliente com mais de 10 anos de atuação no mercado de tecnologia e comunicação.</p>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <a href="#" style="color: var(--primary); font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: var(--primary); font-size: 18px;"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="about-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 3px solid var(--primary-light);">
+                        <img src="img/team2.jpg" alt="Membro da Equipe" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3>Carlos Mendes</h3>
+                    <p style="color: var(--primary); font-weight: 500; margin-bottom: 15px;">CTO</p>
+                    <p>Desenvolvedor full-stack com paixão por criar soluções inovadoras que transformam a comunicação digital.</p>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <a href="#" style="color: var(--primary); font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: var(--primary); font-size: 18px;"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="about-card" style="text-align: center;">
+                    <div style="width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 auto 20px; border: 3px solid var(--primary-light);">
+                        <img src="img/team3.jpg" alt="Membro da Equipe" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h3>Mariana Costa</h3>
+                    <p style="color: var(--primary); font-weight: 500; margin-bottom: 15px;">Head de Sucesso do Cliente</p>
+                    <p>Especialista em garantir que cada cliente tenha uma experiência excepcional com nossa plataforma.</p>
+                    <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <a href="#" style="color: var(--primary); font-size: 18px;"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" style="color: var(--primary); font-size: 18px;"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="final-cta">
+        <div class="container">
+            <h2>Pronto para transformar seu atendimento?</h2>
+            <p>Experimente a Galaxy Chat gratuitamente por 7 dias e descubra como podemos ajudar sua empresa a se comunicar melhor.</p>
+            <div class="cta-buttons">
+                <a href="https://app.galaxychat.com.br/#/signup" class="cta-button">Teste Grátis</a>
+                <a href="index.html#pricing" class="cta-button secondary">Ver Planos</a>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer>
@@ -171,9 +218,10 @@
         <i class="fas fa-arrow-up"></i>
     </a>
     
-        <!-- Scripts -->
-        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-        <script src="js/script.js"></script>
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/nav.js"></script>
 </body>
 </html>
