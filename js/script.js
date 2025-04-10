@@ -95,11 +95,12 @@ $(document).ready(function() {
     let currentImageIndex = 0;
     let zoomLevel = 1;
     
-    // Variáveis para controle do arrastar da imagem
+    // Variáveis para controle do zoom e arrasto
+    let scale = 1;
     let isDragging = false;
-    let startX, startY;
-    let translateX = 0;
-    let translateY = 0;
+    let startX, startY, translateX = 0, translateY = 0;
+    let initialPinchDistance = 0;
+    let lastZoomPoint = { x: 0, y: 0 };
     
     // Variável para armazenar a posição do scroll
     let scrollPosition = 0;
@@ -184,150 +185,181 @@ $(document).ready(function() {
     }
     
     // Funções de zoom
-    function applyZoom() {
-        printsModalImg.css('transform', `scale(${zoomLevel}) translate(${translateX}px, ${translateY}px)`);
+    function handleImageZoom(e) {
+        e.preventDefault();
+        const image = $('.print-modal-img');
+        const modalBody = $('.print-modal-body');
+        const rect = modalBody[0].getBoundingClientRect();
         
-        // Adicionar cursor de arrasto apenas quando tiver zoom
-        if (zoomLevel > 1) {
-            printsModalImg.css('cursor', 'grab');
-            // Mostrar mensagem de ajuda
-            if (!$('.print-modal-drag-hint').length) {
-                const dragHint = $('<div class="print-modal-drag-hint">Arraste para mover a imagem</div>');
-                $('.print-modal-body').append(dragHint);
-                dragHint.fadeIn(300).delay(2000).fadeOut(300, function() {
-                    $(this).remove();
-                });
-            }
-        } else {
-            printsModalImg.css('cursor', 'default');
-            // Resetar posição quando não tiver zoom
-            translateX = 0;
-            translateY = 0;
-            // Remover mensagem se existir
-            $('.print-modal-drag-hint').remove();
+        // Calcula a posição do mouse relativa à imagem
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+        
+        // Salva o ponto de zoom
+        lastZoomPoint = { x: mouseX, y: mouseY };
+        
+        // Determina a direção do zoom
+        const delta = e.deltaY || e.originalEvent.deltaY;
+        const zoomFactor = delta > 0 ? 0.9 : 1.1;
+        
+        // Aplica o zoom com limite mínimo e máximo
+        const newScale = Math.min(Math.max(scale * zoomFactor, 1), 4);
+        
+        if (newScale !== scale) {
+            // Calcula o ponto de origem do zoom em relação à posição atual da imagem
+            const originX = (mouseX - translateX) / scale;
+            const originY = (mouseY - translateY) / scale;
+            
+            // Atualiza a escala
+            scale = newScale;
+            
+            // Atualiza a posição para manter o ponto sob o mouse
+            translateX = mouseX - (originX * scale);
+            translateY = mouseY - (originY * scale);
+            
+            updateImageTransform(image);
         }
     }
     
+    function handleTouchStart(e) {
+        const touches = e.originalEvent.touches;
+        
+        if (touches.length === 2) {
+            // Início do pinch zoom
+            e.preventDefault();
+            initialPinchDistance = getPinchDistance(touches);
+            const rect = $('.print-modal-body')[0].getBoundingClientRect();
+            lastZoomPoint = {
+                x: (touches[0].clientX + touches[1].clientX) / 2 - rect.left,
+                y: (touches[0].clientY + touches[1].clientY) / 2 - rect.top
+            };
+        } else if (touches.length === 1 && scale > 1) {
+            // Início do arrasto (apenas se estiver com zoom)
+            isDragging = true;
+            startX = touches[0].clientX - translateX;
+            startY = touches[0].clientY - translateY;
+        }
+    }
+    
+    function handleTouchMove(e) {
+        const touches = e.originalEvent.touches;
+        const image = $('.print-modal-img');
+        
+        if (touches.length === 2) {
+            // Pinch zoom
+            e.preventDefault();
+            const currentDistance = getPinchDistance(touches);
+            const rect = $('.print-modal-body')[0].getBoundingClientRect();
+            const pinchCenterX = (touches[0].clientX + touches[1].clientX) / 2 - rect.left;
+            const pinchCenterY = (touches[0].clientY + touches[1].clientY) / 2 - rect.top;
+            
+            if (initialPinchDistance > 0) {
+                const zoomFactor = currentDistance / initialPinchDistance;
+                const newScale = Math.min(Math.max(scale * zoomFactor, 1), 4);
+                
+                if (newScale !== scale) {
+                    // Calcula o ponto de origem do zoom em relação à posição atual
+                    const originX = (pinchCenterX - translateX) / scale;
+                    const originY = (pinchCenterY - translateY) / scale;
+                    
+                    // Atualiza a escala
+                    scale = newScale;
+                    
+                    // Atualiza a posição para manter o centro do pinch
+                    translateX = pinchCenterX - (originX * scale);
+                    translateY = pinchCenterY - (originY * scale);
+                    
+                    updateImageTransform(image);
+                }
+            }
+            
+            // Atualiza o ponto de zoom
+            lastZoomPoint = { x: pinchCenterX, y: pinchCenterY };
+            initialPinchDistance = currentDistance;
+        } else if (touches.length === 1 && isDragging) {
+            // Arrasto
+            e.preventDefault();
+            translateX = touches[0].clientX - startX;
+            translateY = touches[0].clientY - startY;
+            updateImageTransform(image);
+        }
+    }
+    
+    function updateImageTransform(image) {
+        const modalBody = $('.print-modal-body');
+        const bodyRect = modalBody[0].getBoundingClientRect();
+        const imageRect = image[0].getBoundingClientRect();
+        
+        // Calcula os limites de arrasto baseado no zoom
+        const maxTranslateX = Math.max(0, (imageRect.width * scale - bodyRect.width) / 2);
+        const maxTranslateY = Math.max(0, (imageRect.height * scale - bodyRect.height) / 2);
+        
+        // Limita o arrasto para manter a imagem sempre visível
+        translateX = Math.min(Math.max(translateX, -maxTranslateX), maxTranslateX);
+        translateY = Math.min(Math.max(translateY, -maxTranslateY), maxTranslateY);
+        
+        // Aplica a transformação com suavização
+        image.css({
+            'transform': `translate3d(${translateX}px, ${translateY}px, 0) scale(${scale})`,
+            'transform-origin': '0 0',
+            'transition': isDragging ? 'none' : 'transform 0.2s ease-out'
+        });
+        
+        // Atualiza o cursor baseado no zoom
+        modalBody.css('cursor', scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default');
+    }
+    
+    function getPinchDistance(touches) {
+        return Math.hypot(
+            touches[0].clientX - touches[1].clientX,
+            touches[0].clientY - touches[1].clientY
+        );
+    }
+    
+    // Event Listeners
+    $('.print-modal-body')
+        .on('wheel', handleImageZoom)
+        .on('touchstart', handleTouchStart)
+        .on('touchmove', handleTouchMove)
+        .on('touchend touchcancel', function() {
+            isDragging = false;
+            initialPinchDistance = 0;
+            $(this).css('cursor', scale > 1 ? 'grab' : 'default');
+        })
+        .on('mousedown', function(e) {
+            if (scale > 1) {
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                $(this).css('cursor', 'grabbing');
+            }
+        })
+        .on('mousemove', function(e) {
+            if (isDragging && scale > 1) {
+                translateX = e.clientX - startX;
+                translateY = e.clientY - startY;
+                updateImageTransform($('.print-modal-img'));
+            }
+        })
+        .on('mouseup mouseleave', function() {
+            isDragging = false;
+            $(this).css('cursor', scale > 1 ? 'grab' : 'default');
+        });
+    
+    // Reset zoom ao fechar o modal
     function resetZoom() {
-        zoomLevel = 1;
+        scale = 1;
         translateX = 0;
         translateY = 0;
-        applyZoom();
-    }
-    
-    zoomInButton.click(function() {
-        zoomLevel += 0.25;
-        if (zoomLevel > 3) zoomLevel = 3; // Limite máximo de zoom
-        applyZoom();
-    });
-    
-    zoomOutButton.click(function() {
-        zoomLevel -= 0.25;
-        if (zoomLevel < 0.5) zoomLevel = 0.5; // Limite mínimo de zoom
-        applyZoom();
-    });
-    
-    zoomResetButton.click(resetZoom);
-    
-    // Permitir zoom com clique duplo na imagem
-    printsModalImg.dblclick(function() {
-        if (zoomLevel === 1) {
-            zoomLevel = 2;
-        } else {
-            zoomLevel = 1;
-        }
-        applyZoom();
-    });
-    
-    // Implementar arrasto da imagem com zoom
-    printsModalImg.on('mousedown touchstart', function(e) {
-        if (zoomLevel <= 1) return; // Não arrastar se não tiver zoom
-        
-        isDragging = true;
-        printsModalImg.css('cursor', 'grabbing');
-        
-        // Obter posição inicial do mouse/toque
-        if (e.type === 'touchstart') {
-            startX = e.originalEvent.touches[0].clientX - translateX;
-            startY = e.originalEvent.touches[0].clientY - translateY;
-        } else {
-            startX = e.clientX - translateX;
-            startY = e.clientY - translateY;
-        }
-        
-        e.preventDefault();
-    });
-    
-    // Implementar o zoom com a roda do mouse
-    $('.print-modal, .print-modal-body, .print-modal-img').on('wheel', function(e) {
-        e.preventDefault(); // Impedir o scroll da página
-        
-        if (!printsModal.is(':visible')) return;
-        
-        const delta = e.originalEvent.deltaY;
-        const zoomSpeed = 0.1; // Velocidade do zoom
-        
-        // Aplicar zoom
-        if (delta < 0) { // Scroll para cima - aumentar zoom
-            zoomLevel += zoomSpeed;
-            if (zoomLevel > 3) zoomLevel = 3; // Limite máximo
-        } else { // Scroll para baixo - diminuir zoom
-            zoomLevel -= zoomSpeed;
-            if (zoomLevel < 0.5) zoomLevel = 0.5; // Limite mínimo
-        }
-        
-        applyZoom();
-        return false; // Adicionando para reforçar a prevenção de scroll
-    });
-    
-    $(document).on('mousemove touchmove', function(e) {
-        if (!isDragging) return;
-        
-        let currentX, currentY;
-        
-        // Obter posição atual do mouse/toque
-        if (e.type === 'touchmove') {
-            currentX = e.originalEvent.touches[0].clientX;
-            currentY = e.originalEvent.touches[0].clientY;
-        } else {
-            currentX = e.clientX;
-            currentY = e.clientY;
-        }
-        
-        // Calcular nova posição
-        translateX = currentX - startX;
-        translateY = currentY - startY;
-        
-        // Limitar arrasto com base no zoom
-        const maxTranslate = 100 * (zoomLevel - 1);
-        translateX = Math.max(-maxTranslate, Math.min(maxTranslate, translateX));
-        translateY = Math.max(-maxTranslate, Math.min(maxTranslate, translateY));
-        
-        applyZoom();
-        e.preventDefault();
-    });
-    
-    $(document).on('mouseup touchend', function() {
-        if (isDragging) {
-            isDragging = false;
-            printsModalImg.css('cursor', 'grab');
-        }
-    });
-    
-    // Resetar a posição da imagem quando mudar de imagem
-    function changeImage(newImageIndex) {
-        currentImageIndex = newImageIndex;
-        
-        const img = $(screenshotImages[currentImageIndex]);
-        const imgSrc = img.attr('src');
-        const imgAlt = img.attr('alt');
-        
-        // Atualizar os detalhes do modal
-        printsModalImg.attr('src', imgSrc);
-        printsModalTitle.text('Galaxy Chat - ' + imgAlt);
-        printsModalCaption.text(imgAlt);
-        updateCounter();
-        resetZoom();
+        isDragging = false;
+        initialPinchDistance = 0;
+        lastZoomPoint = { x: 0, y: 0 };
+        $('.print-modal-img').css({
+            'transform': '',
+            'transform-origin': '0 0',
+            'transition': 'transform 0.3s ease-out'
+        });
+        $('.print-modal-body').css('cursor', 'default');
     }
     
     // Atualizar as funções de navegação para usar a nova função changeImage
